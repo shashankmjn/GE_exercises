@@ -43,4 +43,28 @@ public class BankTest {
         bank.withdrawFromAccount("004", 100.0f);
         assertEquals(0.0f, account.getBalance(), 0.01);
     }
+
+    @Test
+    public void getTotalHoldingsTest() {
+        Account account1 = new Account("004", "Checking", 100.0f);
+        Account account2 = new Account("007", "Savings", 120.0f);
+        Account account3 = new Account("010", "Savings", 500.0f);
+        Account account4 = new Account("011", "Checking", 80.0f);
+        bank.addAccount(account1);
+        bank.addAccount(account2);
+        bank.addAccount(account3);
+        bank.addAccount(account4);
+        assertEquals(800.0f, bank.getCurrentHoldings(), 0.01f);
+    }
+
+    @Test
+    public void projectProfitLossTest() {
+        Account account1 = new Account("004", "Checking", 100.0f);
+        Account account2 = new Account("007", "Savings", 120.0f);
+        Account account3 = new Account("010", "Savings", 500.0f);
+        bank.addAccount(account1);
+        bank.addAccount(account2);
+        bank.addAccount(account3);
+        assertEquals("Loss", bank.projectProfitOrLoss());
+    }
 }

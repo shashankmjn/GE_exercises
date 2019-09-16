@@ -5,39 +5,39 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.ge.exercise4.constant.CommonConstants.CANNOT_REBUILD;
-import static com.ge.exercise4.constant.CommonConstants.GENX_ENGINE;
+import static com.ge.exercise4.constant.CommonConstants.GE9X_ENGINE;
 import static com.ge.exercise4.constant.CommonConstants.SERVICE_HOURS_EXCEEDED;
 import static com.ge.exercise4.exception.ErrorCode.FLIGHT_HOURS_EXCEED_MAX;
 import static com.ge.exercise4.exception.ErrorCode.FLIGHT_HOURS_INCONSISTENT;
 import static com.ge.exercise4.exception.ErrorCode.REBUILD_COUNT_EXCEEDS_MAX;
 
-public class GENx {
-    private static final Logger logger = LogManager.getLogger(GENx.class);
+public class GE9x {
+    private static final Logger logger = LogManager.getLogger(GE90.class);
 
-    private static final String ENGINE_MODEL = GENx.class.getSimpleName();
+    private static final String ENGINE_MODEL = GE9x.class.getSimpleName();
     private final String serialNumber;
 
-    public final int maxNumRebuilds = 4;
-    public final double flightHoursBeforeRebuild = 20_000;
-    public final double dryWeight = 13_552;
-    public final double wetWeight = 14_103;
-    public final double takeoffThrust = 74_170;
+    public final int maxNumRebuilds = 5;
+    public final double flightHoursBeforeRebuild = 30_000;
+    public final double dryWeight = 15_505;
+    public final double wetWeight = 15_900;
+    public final double takeoffThrust = 100_000;
 
     private double flightHours;
     private int numRebuilds;
 
-    public GENx(String serialNumber, double flightHours, int numRebuilds) throws EngineException {
+    public GE9x(String serialNumber, double flightHours, int numRebuilds) throws EngineException {
         this.serialNumber = serialNumber;
         validateEnteredFlightHours(flightHours, numRebuilds);
         this.flightHours = flightHours;
         this.numRebuilds = numRebuilds;
     }
 
-    public GENx(String serialNumber, double flightHours) throws EngineException {
+    public GE9x(String serialNumber, double flightHours) throws EngineException {
         this(serialNumber, flightHours, 0);
     }
 
-    public GENx(String serialNumber) throws EngineException {
+    public GE9x(String serialNumber) throws EngineException {
         this(serialNumber, 0.0);
     }
 
@@ -45,7 +45,8 @@ public class GENx {
         return flightHours;
     }
 
-    public void setFlightHours(double flightHours) {
+    public void setFlightHours(double flightHours) throws EngineException {
+        validateEnteredFlightHours(flightHours, numRebuilds);
         this.flightHours = flightHours;
     }
 
@@ -59,12 +60,12 @@ public class GENx {
 
     public double getHoursBeforeRebuild() {
         if(numRebuilds >= maxNumRebuilds)
-            System.out.println(String.format(CANNOT_REBUILD, GENX_ENGINE));
+            System.out.println(String.format(CANNOT_REBUILD, GE9X_ENGINE));
         return ((numRebuilds+1) * flightHoursBeforeRebuild) - flightHours;
     }
 
     public double getLeftServiceLife() {
-        double maxFlightHours = (maxNumRebuilds+1) * flightHoursBeforeRebuild;
+        double maxFlightHours = (maxNumRebuilds + 1) * flightHoursBeforeRebuild;
         return maxFlightHours - flightHours;
     }
 
